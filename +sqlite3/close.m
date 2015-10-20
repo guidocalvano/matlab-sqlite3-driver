@@ -9,5 +9,8 @@ function close(varargin)
 % closed.
 %
 % See also sqlite3.open sqlite3.execute
+
+  sqlite3.popDatabase();
+
   libsqlite3_('close', varargin{:});
 end

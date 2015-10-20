@@ -6,5 +6,18 @@ function timeout(varargin)
 %
 % The timeout operation sets how long the driver should wait when the
 % database is locked by other processes.
-  libsqlite3_('timeout', varargin{:});
+
+  if (length(varargin) > 1)
+    libsqlite3_('timeout', varargin{:});
+    return;
+  end
+  
+  topDatabase = sqlite3.peekDatabase();
+  if (~topDatabase)
+    libsqlite3_('timeout', varargin{:});
+    return;
+  end
+  
+  newArgs = horzcat(sqlite3.peekDatabase(), varargin);
+  libsqlite3_('timeout', newArgs{:});
 end
